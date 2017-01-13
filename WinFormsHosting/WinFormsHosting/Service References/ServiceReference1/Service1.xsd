@@ -32,4 +32,17 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserFile" nillable="true" type="tns:UserFile" />
+  <xs:complexType name="ArrayOfUserFilesDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserFilesDTO" nillable="true" type="tns:UserFilesDTO" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserFilesDTO" nillable="true" type="tns:ArrayOfUserFilesDTO" />
+  <xs:complexType name="UserFilesDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserFilesDTO" nillable="true" type="tns:UserFilesDTO" />
 </xs:schema>

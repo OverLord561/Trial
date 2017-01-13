@@ -104,6 +104,9 @@
     <None Include="Service References\ServiceReference1\WinFormsHosting.ServiceReference1.CurrentUser.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference1\WinFormsHosting.ServiceReference1.UserFilesDTO.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

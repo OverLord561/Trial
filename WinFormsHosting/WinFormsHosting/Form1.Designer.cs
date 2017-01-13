@@ -38,6 +38,8 @@
             this.progressLabel = new System.Windows.Forms.Label();
             this.regiserLabel = new System.Windows.Forms.Label();
             this.logOutButton = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // logInButton
@@ -106,7 +108,7 @@
             // 
             this.progressLabel.AutoSize = true;
             this.progressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.progressLabel.Location = new System.Drawing.Point(312, 223);
+            this.progressLabel.Location = new System.Drawing.Point(312, 195);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(51, 13);
             this.progressLabel.TabIndex = 8;
@@ -133,11 +135,21 @@
             this.logOutButton.UseVisualStyleBackColor = true;
             this.logOutButton.Click += new System.EventHandler(this.logOutButton_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 219);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(935, 150);
+            this.dataGridView1.TabIndex = 11;
+           
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 262);
+            this.ClientSize = new System.Drawing.Size(959, 416);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.logOutButton);
             this.Controls.Add(this.regiserLabel);
             this.Controls.Add(this.progressLabel);
@@ -150,6 +162,7 @@
             this.Controls.Add(this.logInButton);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,6 +180,7 @@
         private System.Windows.Forms.Label progressLabel;
         private System.Windows.Forms.Label regiserLabel;
         private System.Windows.Forms.Button logOutButton;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

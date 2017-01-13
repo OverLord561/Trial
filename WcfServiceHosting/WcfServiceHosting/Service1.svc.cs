@@ -166,9 +166,15 @@ namespace WcfServiceHosting
             return user.CurrentUserId;
         }
 
-        public IEnumerable<UserFile> GetUserFilesByUserId(int userId)
+        public IEnumerable<UserFilesDTO> GetUserFilesByUserId(int userId)
         {
-            List<UserFile> files = db.UserFiles.Where( x=>x.CurrentUserId == userId).ToList();
+            List<UserFilesDTO> files = db.UserFiles.Where(x=>x.CurrentUserId == userId)
+                                                   .Select(n => new UserFilesDTO
+            {
+                Description = n.UserFileDescription,
+                Name = n.UserFileName
+            }).ToList();
+
             return files;
         }
     }

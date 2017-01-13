@@ -231,6 +231,67 @@ namespace WinFormsHosting.ServiceReference1 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserFilesDTO", Namespace="http://schemas.datacontract.org/2004/07/WcfServiceHosting")]
+    [System.SerializableAttribute()]
+    public partial class UserFilesDTO : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DescriptionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description {
+            get {
+                return this.DescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
     public interface IService1 {
@@ -270,6 +331,12 @@ namespace WinFormsHosting.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserIdByName", ReplyAction="http://tempuri.org/IService1/GetUserIdByNameResponse")]
         System.Threading.Tasks.Task<int> GetUserIdByNameAsync(string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserFilesByUserId", ReplyAction="http://tempuri.org/IService1/GetUserFilesByUserIdResponse")]
+        WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserFilesByUserId", ReplyAction="http://tempuri.org/IService1/GetUserFilesByUserIdResponse")]
+        System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -345,6 +412,14 @@ namespace WinFormsHosting.ServiceReference1 {
         
         public System.Threading.Tasks.Task<int> GetUserIdByNameAsync(string userName) {
             return base.Channel.GetUserIdByNameAsync(userName);
+        }
+        
+        public WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(int userId) {
+            return base.Channel.GetUserFilesByUserId(userId);
+        }
+        
+        public System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId) {
+            return base.Channel.GetUserFilesByUserIdAsync(userId);
         }
     }
 }

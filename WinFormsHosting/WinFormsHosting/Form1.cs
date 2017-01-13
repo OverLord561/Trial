@@ -42,7 +42,9 @@ namespace WinFormsHosting
         public async void SetUserId(string name)
         {
           this.userId = await _service.GetUserIdByNameAsync(name);
-            
+            ShowUserFiles();
+           
+
         }
 
 
@@ -84,6 +86,8 @@ namespace WinFormsHosting
             {
                 SetUserName(inputName.Text);
                 ShowStatus("Hello " + this.userName);
+                
+
             }
             else
             {
@@ -115,6 +119,9 @@ namespace WinFormsHosting
            
             ShowProgress("Copied");
             await _service.AddFileAsync(this.userId, fileName, "", path);
+            ShowUserFiles();
+
+
         }
 
         // Upload button
@@ -149,9 +156,16 @@ namespace WinFormsHosting
         {
             inputName.Text = "";
             inputPassword.Text = "";
-           
+            
+
         }
 
+        private async void ShowUserFiles()
+        {
+
+            dataGridView1.DataSource = await _service.GetUserFilesByUserIdAsync(this.userId);
+
+        }
        
     }
 }
