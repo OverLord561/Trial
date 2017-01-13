@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WcfServiceHosting" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfServiceHosting" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfCurrentUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CurrentUser" nillable="true" type="tns:CurrentUser" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCurrentUser" nillable="true" type="tns:ArrayOfCurrentUser" />
+  <xs:complexType name="CurrentUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="CurrentUserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CurrentUserPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserFile" nillable="true" type="tns:ArrayOfUserFile" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CurrentUser" nillable="true" type="tns:CurrentUser" />
+  <xs:complexType name="ArrayOfUserFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserFile" nillable="true" type="tns:UserFile" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserFile" nillable="true" type="tns:ArrayOfUserFile" />
+  <xs:complexType name="UserFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CurrentUser" nillable="true" type="tns:CurrentUser" />
+      <xs:element minOccurs="0" name="CurrentUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserFileDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserFileId" type="xs:int" />
+      <xs:element minOccurs="0" name="UserFileName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserFilePath" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserFile" nillable="true" type="tns:UserFile" />
+</xs:schema>

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimeNumbers", "PrimeNumbers\PrimeNumbers.csproj", "{6EBFEFC5-3582-40E5-9474-415E52246902}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceHosting", "WcfServiceHosting\WcfServiceHosting.csproj", "{724A9F5E-68D4-4777-B621-FE54DAA58589}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6EBFEFC5-3582-40E5-9474-415E52246902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EBFEFC5-3582-40E5-9474-415E52246902}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EBFEFC5-3582-40E5-9474-415E52246902}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EBFEFC5-3582-40E5-9474-415E52246902}.Release|Any CPU.Build.0 = Release|Any CPU
+		{724A9F5E-68D4-4777-B621-FE54DAA58589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724A9F5E-68D4-4777-B621-FE54DAA58589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724A9F5E-68D4-4777-B621-FE54DAA58589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724A9F5E-68D4-4777-B621-FE54DAA58589}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
