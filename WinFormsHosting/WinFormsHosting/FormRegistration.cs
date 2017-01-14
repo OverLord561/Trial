@@ -51,8 +51,9 @@ namespace WinFormsHosting
 
                 this.Close();
             }
-            catch (Exception ex)
+            catch (System.ServiceModel.FaultException ex)
             {
+                
                 del(ex.Message);
             }
         

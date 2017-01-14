@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ using WinFormsHosting.ServiceReference1;
 
 namespace WinFormsHosting
 {
+    
     public partial class Form1 : Form
     {
         Service1Client _service = new Service1Client();
@@ -20,7 +22,7 @@ namespace WinFormsHosting
         string hostingPath;
         string userName;
         int userId;
-
+        int count = 0;
 
 
 
@@ -164,8 +166,66 @@ namespace WinFormsHosting
         {
 
             dataGridView1.DataSource = await _service.GetUserFilesByUserIdAsync(this.userId);
+            dataGridView1.Columns["Id"].Visible = false;
 
         }
-       
+
+        private async void buttonUpdate_Click(object sender, EventArgs e)
+        {
+            dataGridView1.EndEdit();
+
+            bool cellWasChanged = false;
+
+            
+            UserFilesDTO fileInfo = new UserFilesDTO();
+
+            // use reflection
+            PropertyInfo propertyInfo; 
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (cell.Selected == true)
+                    {
+                        cellWasChanged = true;
+                    }
+                    var inedit =  cell.IsInEditMode;
+                    string value = cell.Value.ToString();
+                    string columnName = dataGridView1.Columns[cell.ColumnIndex].Name;
+
+                    //mapper
+                    propertyInfo = fileInfo.GetType().GetProperty(columnName);
+                    propertyInfo.SetValue(fileInfo, value, null);
+                }
+
+                if (cellWasChanged)
+                {
+                    await _service.UpdateFileInfoAsync(fileInfo);
+                    cellWasChanged = false;
+
+                }
+               
+
+            }
+            List<WinFormsHosting.ServiceReference1.UserFilesDTO> newInfo = new List<UserFilesDTO>();
+            UserFilesDTO c = new UserFilesDTO();
+            
+           // foreach(UserFilesDTO file in dataGridView1.DataSource)
+
+         //   await _service.UpdateFileInfoAsync((WinFormsHosting.ServiceReference1.UserFilesDTO)dataGridView1.DataSource);
+
+        }
+
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            count++;
+            if (dataGridView1.Columns[e.ColumnIndex].Name == "Reference")
+            {
+                //your code goes here
+            }
+        }
+
     }
 }

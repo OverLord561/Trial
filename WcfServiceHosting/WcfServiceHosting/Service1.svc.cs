@@ -94,8 +94,13 @@ namespace WcfServiceHosting
           
             try
             {
+                //if (name == "")
+                //{
+                //throw new FaultException("Fields must be filled");
+                //}
+
                 Thread.Sleep(1000);
-                if (!CheckIfUserExist(name))
+                if (!CheckIfUserExist(name) )
                 {
                     CurrentUser user = new CurrentUser { CurrentUserName = name, CurrentUserPassword = password };
                     db.CurrentUsers.Add(user);
@@ -107,11 +112,11 @@ namespace WcfServiceHosting
                     return null;
                 }
 
-            }
+           }
             catch (Exception ex)
-            {
-                //throw new FaultException("Fields must be filled");
-                throw new Exception("Fields must be filled");
+           {
+                throw new FaultException("Fields must be filled");
+          //      throw new Exception("Fields must be filled");
             }
           
             
@@ -171,11 +176,17 @@ namespace WcfServiceHosting
             List<UserFilesDTO> files = db.UserFiles.Where(x=>x.CurrentUserId == userId)
                                                    .Select(n => new UserFilesDTO
             {
+                Id = n.UserFileId.ToString(),
                 Description = n.UserFileDescription,
                 Name = n.UserFileName
             }).ToList();
 
             return files;
+        }
+
+        public void UpdateFileInfo(UserFilesDTO fileInfo)
+        {
+           
         }
     }
 }

@@ -244,6 +244,9 @@ namespace WinFormsHosting.ServiceReference1 {
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -265,6 +268,19 @@ namespace WinFormsHosting.ServiceReference1 {
                 if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
                     this.DescriptionField = value;
                     this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdField, value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
                 }
             }
         }
@@ -337,6 +353,12 @@ namespace WinFormsHosting.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserFilesByUserId", ReplyAction="http://tempuri.org/IService1/GetUserFilesByUserIdResponse")]
         System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
+        void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
+        System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -420,6 +442,14 @@ namespace WinFormsHosting.ServiceReference1 {
         
         public System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId) {
             return base.Channel.GetUserFilesByUserIdAsync(userId);
+        }
+        
+        public void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo) {
+            base.Channel.UpdateFileInfo(fileInfo);
+        }
+        
+        public System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo) {
+            return base.Channel.UpdateFileInfoAsync(fileInfo);
         }
     }
 }

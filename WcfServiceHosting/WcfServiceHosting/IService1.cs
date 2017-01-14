@@ -34,11 +34,16 @@ namespace WcfServiceHosting
 
         [OperationContract]
         IEnumerable<UserFilesDTO> GetUserFilesByUserId(int userId);
+
+        [OperationContract]
+        void UpdateFileInfo(UserFilesDTO fileInfo);
     }
 
     [DataContract]
     public class UserFilesDTO
     {
+        [DataMember]
+        public string Id { get; set; }
         [DataMember]
         public string Name { get; set; }
         [DataMember]
