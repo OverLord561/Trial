@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,8 +23,8 @@ namespace WinFormsHosting
         string hostingPath;
         string userName;
         int userId;
-        int count = 0;
-
+        List<int> indexesOfChangedRows;
+        
 
 
         public void SetStatus(bool status)
@@ -33,6 +34,7 @@ namespace WinFormsHosting
             uploadButton.Enabled = status;
             logOutButton.Enabled = status;
             progressLabel.Enabled = status;
+            buttonUpdate.Enabled = status;
         }
 
         public void SetUserName(string name)
@@ -58,8 +60,13 @@ namespace WinFormsHosting
             uploadButton.Enabled = false;
             //hide log out button
             logOutButton.Enabled = false;
+
+            buttonUpdate.Enabled = false;
             // I am using the current working directory of the application and folder for users files\\Hosting
             hostingPath = Directory.GetCurrentDirectory() + "\\Hosting";
+
+            indexesOfChangedRows = new List<int>();
+            
         }
 
        
@@ -69,9 +76,9 @@ namespace WinFormsHosting
            statusLabel.Text = message;
         }
 
-        public void ShowProgress(string message)
+        public void ShowProgress(Label label ,string message)
         {
-            progressLabel.Text = message;
+            label.Text = message;
         }
 
         // Log In button
@@ -81,19 +88,18 @@ namespace WinFormsHosting
             ShowStatus("Checking...");
             SetStatus( await _service.LogInAsync(inputName.Text, inputPassword.Text));   
                     
-            //label3.BackColor = Color.Red;
            
 
             if (isAuthorised)
             {
                 SetUserName(inputName.Text);
                 ShowStatus("Hello " + this.userName);
-                
-
+              
             }
             else
             {
                 ShowStatus("Current user does not exist...");
+                dataGridView1.DataSource = null;
             }
 
         }
@@ -102,6 +108,7 @@ namespace WinFormsHosting
         {
             string path = null;
             string fileName = null;
+            string newFilePath = null;
             OpenFileDialog openFile = new OpenFileDialog();
 
           //  openFile.Filter = "Text documents (*.txt)|*.txt";
@@ -114,13 +121,14 @@ namespace WinFormsHosting
                      path = filename;                   
                 }
             }
-            //////
+           
             fileName = openFile.SafeFileName;
-            ShowProgress("Copying started...");
+            ShowProgress(progressLabel,"Copying started...");
             await _service.CopyFileToFolderAsync(path, fileName,this.hostingPath, this.userName);
            
-            ShowProgress("Copied");
-            await _service.AddFileAsync(this.userId, fileName, "", path);
+            ShowProgress(progressLabel,"Copied");
+            newFilePath = hostingPath + "\\" + this.userName + "\\" + fileName;
+            await _service.AddFileAsync(this.userId, fileName, "", newFilePath);
             ShowUserFiles();
 
 
@@ -130,11 +138,7 @@ namespace WinFormsHosting
         private void uploadButton_Click(object sender, EventArgs e)
         {
             LoadFile();
-            //label4.Text = LoadFile();
-           // string filePath = LoadFile();
            
-
-            //return LoadFile();
         }
 
         // Register label
@@ -152,6 +156,8 @@ namespace WinFormsHosting
             ShowStatus("Status");
             SetStatus(false);
             ResetInputs();
+            ShowProgress(progressLabel , "Progress:");
+            dataGridView1.DataSource = null;
         }
 
         private void ResetInputs()
@@ -159,7 +165,6 @@ namespace WinFormsHosting
             inputName.Text = "";
             inputPassword.Text = "";
             
-
         }
 
         private async void ShowUserFiles()
@@ -167,64 +172,87 @@ namespace WinFormsHosting
 
             dataGridView1.DataSource = await _service.GetUserFilesByUserIdAsync(this.userId);
             dataGridView1.Columns["Id"].Visible = false;
+            dataGridView1.AutoResizeColumns();
 
         }
 
         private async void buttonUpdate_Click(object sender, EventArgs e)
         {
-            dataGridView1.EndEdit();
-
-            bool cellWasChanged = false;
-
-            
-            UserFilesDTO fileInfo = new UserFilesDTO();
-
-            // use reflection
-            PropertyInfo propertyInfo; 
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
+            try
             {
-                foreach (DataGridViewCell cell in row.Cells)
+                dataGridView1.EndEdit();
+
+
+                UserFilesDTO fileInfo = new UserFilesDTO();
+
+                // use reflection
+                PropertyInfo propertyInfo;
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if (cell.Selected == true)
+
+                    foreach (int changedIndex in indexesOfChangedRows)
                     {
-                        cellWasChanged = true;
+                        if (row.Index == changedIndex)
+                        {
+                            try
+                            {
+
+
+
+                                foreach (DataGridViewCell cell in row.Cells)
+                                {
+
+
+
+                                    string value = cell.Value.ToString();
+                                    string columnName = dataGridView1.Columns[cell.ColumnIndex].Name;
+
+
+                                    //auto mapper
+                                    propertyInfo = fileInfo.GetType().GetProperty(columnName);
+                                    propertyInfo.SetValue(fileInfo, value, null);
+                                }
+
+
+                                // ShowProgress(progressLabel, );
+                                await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
+
+                            }
+                            catch
+                            {
+                                ShowProgress(progressLabel, "Name of file must be declared!!!");
+                            }
+
+                            }
+
+
+
                     }
-                    var inedit =  cell.IsInEditMode;
-                    string value = cell.Value.ToString();
-                    string columnName = dataGridView1.Columns[cell.ColumnIndex].Name;
-
-                    //mapper
-                    propertyInfo = fileInfo.GetType().GetProperty(columnName);
-                    propertyInfo.SetValue(fileInfo, value, null);
-                }
-
-                if (cellWasChanged)
-                {
-                    await _service.UpdateFileInfoAsync(fileInfo);
-                    cellWasChanged = false;
+                    
+                    
 
                 }
-               
 
+                ShowUserFiles();
             }
-            List<WinFormsHosting.ServiceReference1.UserFilesDTO> newInfo = new List<UserFilesDTO>();
-            UserFilesDTO c = new UserFilesDTO();
+            catch (FaultException ex)
+            {
+                ShowProgress(progressLabel, ex.Message);
+            }
             
-           // foreach(UserFilesDTO file in dataGridView1.DataSource)
-
-         //   await _service.UpdateFileInfoAsync((WinFormsHosting.ServiceReference1.UserFilesDTO)dataGridView1.DataSource);
-
+           
         }
 
 
         private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            count++;
-            if (dataGridView1.Columns[e.ColumnIndex].Name == "Reference")
-            {
-                //your code goes here
-            }
+            InsertChangedRow(e.RowIndex);
+            
+        }
+        private void InsertChangedRow(int index)
+        {
+            this.indexesOfChangedRows.Add(index);
         }
 
     }

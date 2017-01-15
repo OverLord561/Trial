@@ -47,6 +47,7 @@ namespace WinFormsHosting
                 else
                 {
                     del("Current user exists");
+                    
                 }
 
                 this.Close();

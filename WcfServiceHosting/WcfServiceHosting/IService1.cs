@@ -36,7 +36,7 @@ namespace WcfServiceHosting
         IEnumerable<UserFilesDTO> GetUserFilesByUserId(int userId);
 
         [OperationContract]
-        void UpdateFileInfo(UserFilesDTO fileInfo);
+        void UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath);
     }
 
     [DataContract]

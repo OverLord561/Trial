@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -19,19 +20,26 @@ namespace WcfServiceHosting
 
         public bool AddFile(int userId, string filename, string description, string path)
         {
+            CurrentUser user =  db.CurrentUsers.Find(userId);
             try
             {
-                CheckIfFileExist(userId, filename);
 
-                UserFile file = new UserFile
+
+                if (!CheckIfFileExist(userId, filename))
                 {
-                    CurrentUserId = userId,
-                    UserFileName = filename,
-                    UserFileDescription = description,
-                    UserFilePath = path
-                };
-                db.UserFiles.Add(file);
-                db.SaveChanges();
+                    UserFile file = new UserFile
+                    {
+                        CurrentUserId = userId,
+                        UserFileName = filename,
+                        UserFileDescription = description,
+                        UserFilePath = path,
+                        CurrentUser = user
+
+                    };
+                    db.UserFiles.Add(file);
+                    db.SaveChanges();
+                }
+                
                 return true;
             }
             catch (Exception ex)
@@ -148,6 +156,7 @@ namespace WcfServiceHosting
 
         public void CopyFileToFolder(string sourceFile, string fileName, string hostingPath, string userName)
         {
+          
             //string targetPath = @"C:\Users\Public\TestFolder\SubDir";
             string targetPath = hostingPath + "\\" + userName;
             string destFile = Path.Combine(targetPath, fileName);
@@ -184,9 +193,37 @@ namespace WcfServiceHosting
             return files;
         }
 
-        public void UpdateFileInfo(UserFilesDTO fileInfo)
+        public void UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath)
         {
-           
+           try
+            {
+               
+                int fileId = Convert.ToInt32(fileInfo.Id);
+                UserFile oldFileInfo = db.UserFiles.FirstOrDefault(x => x.UserFileId == fileId);
+                oldFileInfo.CurrentUser = db.CurrentUsers.Find(oldFileInfo.CurrentUserId);
+                string userName = oldFileInfo.CurrentUser.CurrentUserName;
+
+                if (oldFileInfo.UserFileName != fileInfo.Name)
+                {
+                    string newFilePath = hostingPath + "\\" +userName +"\\" + fileInfo.Name;
+                    File.Move(oldFileInfo.UserFilePath, newFilePath);
+                    oldFileInfo.UserFilePath = newFilePath;
+                }
+
+                oldFileInfo.UserFileName = fileInfo.Name;
+                oldFileInfo.UserFileDescription = fileInfo.Description;
+               
+                db.Entry(oldFileInfo).State = EntityState.Modified;
+                db.SaveChanges();
+
+               // return "Data was updated!";
+          }
+            catch(Exception ex)
+            {
+
+              
+            }
+            
         }
     }
 }

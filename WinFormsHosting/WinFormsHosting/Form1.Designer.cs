@@ -45,7 +45,7 @@
             // 
             // logInButton
             // 
-            this.logInButton.Location = new System.Drawing.Point(313, 122);
+            this.logInButton.Location = new System.Drawing.Point(557, 17);
             this.logInButton.Name = "logInButton";
             this.logInButton.Size = new System.Drawing.Size(75, 23);
             this.logInButton.TabIndex = 0;
@@ -70,7 +70,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(310, 14);
+            this.label1.Location = new System.Drawing.Point(310, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 3;
@@ -97,7 +97,7 @@
             // 
             // uploadButton
             // 
-            this.uploadButton.Location = new System.Drawing.Point(420, 190);
+            this.uploadButton.Location = new System.Drawing.Point(313, 152);
             this.uploadButton.Name = "uploadButton";
             this.uploadButton.Size = new System.Drawing.Size(75, 23);
             this.uploadButton.TabIndex = 7;
@@ -109,7 +109,7 @@
             // 
             this.progressLabel.AutoSize = true;
             this.progressLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.progressLabel.Location = new System.Drawing.Point(312, 195);
+            this.progressLabel.Location = new System.Drawing.Point(312, 191);
             this.progressLabel.Name = "progressLabel";
             this.progressLabel.Size = new System.Drawing.Size(51, 13);
             this.progressLabel.TabIndex = 8;
@@ -119,7 +119,7 @@
             // 
             this.regiserLabel.AutoSize = true;
             this.regiserLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.regiserLabel.Location = new System.Drawing.Point(417, 127);
+            this.regiserLabel.Location = new System.Drawing.Point(568, 96);
             this.regiserLabel.Name = "regiserLabel";
             this.regiserLabel.Size = new System.Drawing.Size(46, 13);
             this.regiserLabel.TabIndex = 9;
@@ -128,7 +128,7 @@
             // 
             // logOutButton
             // 
-            this.logOutButton.Location = new System.Drawing.Point(489, 122);
+            this.logOutButton.Location = new System.Drawing.Point(557, 61);
             this.logOutButton.Name = "logOutButton";
             this.logOutButton.Size = new System.Drawing.Size(75, 23);
             this.logOutButton.TabIndex = 10;
@@ -141,13 +141,13 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 219);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(935, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(620, 150);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(580, 190);
+            this.buttonUpdate.Location = new System.Drawing.Point(420, 152);
             this.buttonUpdate.Name = "buttonUpdate";
             this.buttonUpdate.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdate.TabIndex = 12;
@@ -159,7 +159,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(959, 416);
+            this.ClientSize = new System.Drawing.Size(671, 416);
             this.Controls.Add(this.buttonUpdate);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.logOutButton);

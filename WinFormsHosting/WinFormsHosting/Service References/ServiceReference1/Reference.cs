@@ -355,10 +355,10 @@ namespace WinFormsHosting.ServiceReference1 {
         System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo);
+        void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo);
+        System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -444,12 +444,12 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.GetUserFilesByUserIdAsync(userId);
         }
         
-        public void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo) {
-            base.Channel.UpdateFileInfo(fileInfo);
+        public void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
+            base.Channel.UpdateFileInfo(fileInfo, hostingPath);
         }
         
-        public System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo) {
-            return base.Channel.UpdateFileInfoAsync(fileInfo);
+        public System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
+            return base.Channel.UpdateFileInfoAsync(fileInfo, hostingPath);
         }
     }
 }
