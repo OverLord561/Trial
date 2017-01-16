@@ -55,6 +55,12 @@
   <wsdl:message name="IService1_UpdateFileInfo_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateFileInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_DeleteFileByName_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFileByName" />
+  </wsdl:message>
+  <wsdl:message name="IService1_DeleteFileByName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFileByNameResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="RegisterUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/RegisterUser" message="tns:IService1_RegisterUser_InputMessage" />
@@ -87,6 +93,10 @@
     <wsdl:operation name="UpdateFileInfo">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/UpdateFileInfo" message="tns:IService1_UpdateFileInfo_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/UpdateFileInfoResponse" message="tns:IService1_UpdateFileInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFileByName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/DeleteFileByName" message="tns:IService1_DeleteFileByName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/DeleteFileByNameResponse" message="tns:IService1_DeleteFileByName_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -156,6 +166,15 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateFileInfo">
       <soap:operation soapAction="http://tempuri.org/IService1/UpdateFileInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFileByName">
+      <soap:operation soapAction="http://tempuri.org/IService1/DeleteFileByName" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

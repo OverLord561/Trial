@@ -15,6 +15,7 @@ namespace WcfServiceHosting
     {
 
         [OperationContract]
+        //[FaultContract(typeof(CurrentUser))]
         string RegisterUser(string name, string password);
 
         [OperationContract]
@@ -36,7 +37,10 @@ namespace WcfServiceHosting
         IEnumerable<UserFilesDTO> GetUserFilesByUserId(int userId);
 
         [OperationContract]
-        void UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath);
+        bool UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath);
+
+        [OperationContract]
+        string DeleteFileByName(string fileName, string userName);
     }
 
     [DataContract]
@@ -78,6 +82,8 @@ namespace WcfServiceHosting
     [DataContract]
     public class CurrentUser
     {
+       // public string _message { get; set; }
+        
         [DataMember]
         [Key]
         public int CurrentUserId { get; set; }

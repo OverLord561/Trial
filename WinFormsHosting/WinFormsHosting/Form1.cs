@@ -23,24 +23,26 @@ namespace WinFormsHosting
         string hostingPath;
         string userName;
         int userId;
-        List<int> indexesOfChangedRows;
-        
+        List<int> indexesOfChangedRows;        
 
 
         public void SetStatus(bool status)
-        {
-            
+        {            
             isAuthorised = status;
             uploadButton.Enabled = status;
             logOutButton.Enabled = status;
             progressLabel.Enabled = status;
             buttonUpdate.Enabled = status;
+            buttonDelete.Enabled = status;
         }
 
         public void SetUserName(string name)
         {
             SetUserId(name);
             this.userName = name;
+            inputName.Text = "";
+            inputPassword.Text = "";
+           
         }
 
         public async void SetUserId(string name)
@@ -60,7 +62,7 @@ namespace WinFormsHosting
             uploadButton.Enabled = false;
             //hide log out button
             logOutButton.Enabled = false;
-
+            buttonDelete.Enabled = false;
             buttonUpdate.Enabled = false;
             // I am using the current working directory of the application and folder for users files\\Hosting
             hostingPath = Directory.GetCurrentDirectory() + "\\Hosting";
@@ -144,7 +146,7 @@ namespace WinFormsHosting
         // Register label
         private void regiserLabel_Click(object sender, EventArgs e)
         {
-            
+            dataGridView1.DataSource = null;
             var registerForm = new FormRegistration(this);
             registerForm.Show();
         }
@@ -164,6 +166,7 @@ namespace WinFormsHosting
         {
             inputName.Text = "";
             inputPassword.Text = "";
+            inputDelete.Text = "";
             
         }
 
@@ -178,8 +181,8 @@ namespace WinFormsHosting
 
         private async void buttonUpdate_Click(object sender, EventArgs e)
         {
-            try
-            {
+            bool isUpdated = false;
+           
                 dataGridView1.EndEdit();
 
 
@@ -197,49 +200,49 @@ namespace WinFormsHosting
                         {
                             try
                             {
-
-
-
+                                
                                 foreach (DataGridViewCell cell in row.Cells)
                                 {
-
-
-
+                                    
                                     string value = cell.Value.ToString();
                                     string columnName = dataGridView1.Columns[cell.ColumnIndex].Name;
-
-
+                                    
                                     //auto mapper
                                     propertyInfo = fileInfo.GetType().GetProperty(columnName);
                                     propertyInfo.SetValue(fileInfo, value, null);
                                 }
 
 
-                                // ShowProgress(progressLabel, );
-                                await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
 
+                                isUpdated =  await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
+
+                            if (!isUpdated)
+                            {
+                                ShowProgress(progressLabel, "Incorrect file name");
                             }
+                            else
+                            {
+                                ShowProgress(progressLabel, "Data was updated");
+                            }
+
+                        }
                             catch
                             {
                                 ShowProgress(progressLabel, "Name of file must be declared!!!");
                             }
 
                             }
-
-
-
+                        
                     }
                     
-                    
+                
 
-                }
 
                 ShowUserFiles();
             }
-            catch (FaultException ex)
-            {
-                ShowProgress(progressLabel, ex.Message);
-            }
+            
+              
+            
             
            
         }
@@ -255,5 +258,18 @@ namespace WinFormsHosting
             this.indexesOfChangedRows.Add(index);
         }
 
+        private async void buttonDelete_Click(object sender, EventArgs e)
+        {
+            string fileName =  inputDelete.Text;
+            
+            
+                string message = await _service.DeleteFileByNameAsync(fileName, this.userName);
+
+            ShowProgress(progressLabel, message);
+            ShowUserFiles();
+            inputDelete.Text = "";
+
+           
+        }
     }
 }

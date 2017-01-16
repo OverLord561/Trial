@@ -46,15 +46,15 @@ namespace WinFormsHosting
                 }
                 else
                 {
+                    changeStatus(false);
                     del("Current user exists");
                     
                 }
 
                 this.Close();
             }
-            catch (System.ServiceModel.FaultException ex)
-            {
-                
+            catch (System.ServiceModel.FaultException<CurrentUser> ex)
+            {                
                 del(ex.Message);
             }
         

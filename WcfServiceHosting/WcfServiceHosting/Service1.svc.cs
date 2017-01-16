@@ -63,19 +63,7 @@ namespace WcfServiceHosting
             else
 
                 return false;
-
-            //  try
-            //  {
-            //return true;
-            // throw new Exception("Current file !!!");
-            //  }
-
-            //  catch
-            //{
-            //return false;
-            //throw new Exception("Current file has been added already!!!");
-
-            // }
+           
         }
 
 
@@ -102,11 +90,7 @@ namespace WcfServiceHosting
           
             try
             {
-                //if (name == "")
-                //{
-                //throw new FaultException("Fields must be filled");
-                //}
-
+                
                 Thread.Sleep(1000);
                 if (!CheckIfUserExist(name) )
                 {
@@ -123,8 +107,8 @@ namespace WcfServiceHosting
            }
             catch (Exception ex)
            {
-                throw new FaultException("Fields must be filled");
-          //      throw new Exception("Fields must be filled");
+                
+                return null;
             }
           
             
@@ -193,7 +177,7 @@ namespace WcfServiceHosting
             return files;
         }
 
-        public void UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath)
+        public bool UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath)
         {
            try
             {
@@ -216,14 +200,47 @@ namespace WcfServiceHosting
                 db.Entry(oldFileInfo).State = EntityState.Modified;
                 db.SaveChanges();
 
-               // return "Data was updated!";
+                return true;
           }
             catch(Exception ex)
             {
-
+                return false;
               
             }
             
+        }
+
+        public string DeleteFileByName(string fileName, string userName)
+        {
+            int userId =  GetUserIdByName(userName);
+            UserFile file = db.UserFiles.Where(x => x.CurrentUserId == userId).FirstOrDefault(z=>z.UserFileName.ToUpper() == fileName.ToUpper());
+
+            try
+            {
+                string filePath = file.UserFilePath;
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+
+                    db.UserFiles.Remove(file);
+                    db.SaveChanges();
+                    return "File deleted. Success";
+
+                }
+                else
+                {
+                    return "Invalid file name: file does not exist";
+                }
+            }
+            catch
+            {
+                
+                return "Invalid file name: file does not exist";
+            }
+           
+
+           
         }
     }
 }

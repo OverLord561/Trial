@@ -355,10 +355,16 @@ namespace WinFormsHosting.ServiceReference1 {
         System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
+        bool UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
+        System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteFileByName", ReplyAction="http://tempuri.org/IService1/DeleteFileByNameResponse")]
+        string DeleteFileByName(string fileName, string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteFileByName", ReplyAction="http://tempuri.org/IService1/DeleteFileByNameResponse")]
+        System.Threading.Tasks.Task<string> DeleteFileByNameAsync(string fileName, string userName);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -444,12 +450,20 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.GetUserFilesByUserIdAsync(userId);
         }
         
-        public void UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
-            base.Channel.UpdateFileInfo(fileInfo, hostingPath);
+        public bool UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
+            return base.Channel.UpdateFileInfo(fileInfo, hostingPath);
         }
         
-        public System.Threading.Tasks.Task UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
+        public System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
             return base.Channel.UpdateFileInfoAsync(fileInfo, hostingPath);
+        }
+        
+        public string DeleteFileByName(string fileName, string userName) {
+            return base.Channel.DeleteFileByName(fileName, userName);
+        }
+        
+        public System.Threading.Tasks.Task<string> DeleteFileByNameAsync(string fileName, string userName) {
+            return base.Channel.DeleteFileByNameAsync(fileName, userName);
         }
     }
 }
