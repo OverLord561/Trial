@@ -16,6 +16,21 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CopyFileToFolder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sourceFile" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="fileName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="hostingPath" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CopyFileToFolderResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetAllUsers">
     <xs:complexType>
       <xs:sequence />
@@ -60,21 +75,6 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="CopyFileToFolder">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="sourceFile" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="fileName" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="hostingPath" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="CopyFileToFolderResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
   <xs:element name="GetUserIdByName">
     <xs:complexType>
       <xs:sequence>
@@ -92,7 +92,7 @@
   <xs:element name="GetUserFilesByUserId">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="userId" type="xs:int" />
+        <xs:element minOccurs="0" name="userId" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

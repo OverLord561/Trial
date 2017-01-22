@@ -1,16 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using WinFormsHosting.ServiceReference1;
+
+
 
 
 namespace WinFormsHosting
@@ -18,7 +24,7 @@ namespace WinFormsHosting
     
     public partial class Form1 : Form
     {
-        Service1Client _service = new Service1Client();
+        //Service1Client _service = new Service1Client();
         bool isAuthorised = false;
         string hostingPath;
         string userName;
@@ -47,9 +53,15 @@ namespace WinFormsHosting
 
         public async void SetUserId(string name)
         {
-          this.userId = await _service.GetUserIdByNameAsync(name);
-            ShowUserFiles();
            
+                string serviceUrl = string.Format("http://localhost:53277/Service1.svc/UserIdByName/{0}", name);
+                this.userId = Convert.ToInt32(GetValueFromGetResponse(serviceUrl));
+            
+
+
+            
+              ShowUserFiles();
+
 
         }
 
@@ -84,14 +96,20 @@ namespace WinFormsHosting
         }
 
         // Log In button
-        private async  void logInButton_Click(object sender, EventArgs e)
+        private   void logInButton_Click(object sender, EventArgs e)
         {
-            
-            ShowStatus("Checking...");
-            SetStatus( await _service.LogInAsync(inputName.Text, inputPassword.Text));   
-                    
-           
 
+           
+                string serviceUrl = string.Format("http://localhost:53277/Service1.svc/User/LogIn/{0}/{1}", inputName.Text, inputPassword.Text);
+                bool response = false;
+                response = Convert.ToBoolean(GetValueFromGetResponse(serviceUrl));
+              
+
+                ShowStatus("Checking...");
+                SetStatus(response);
+            
+               
+            
             if (isAuthorised)
             {
                 SetUserName(inputName.Text);
@@ -126,11 +144,30 @@ namespace WinFormsHosting
            
             fileName = openFile.SafeFileName;
             ShowProgress(progressLabel,"Copying started...");
-            await _service.CopyFileToFolderAsync(path, fileName,this.hostingPath, this.userName);
-           
+
+            string serviceUrl = "http://localhost:53277/Service1.svc/File/Copy";
+            JObject json = new JObject();
+
+            json.Add("sourceFile", path);
+            json.Add("fileName", fileName);
+            json.Add("hostingPath", this.hostingPath);
+            json.Add("userName", this.userName);
+
+
+            GetValueFromPostResponse(serviceUrl, json);
+
+            
             ShowProgress(progressLabel,"Copied");
             newFilePath = hostingPath + "\\" + this.userName + "\\" + fileName;
-            await _service.AddFileAsync(this.userId, fileName, "", newFilePath);
+
+            JObject json2 = new JObject();
+            string serviceUrlToAddIntoDB = "http://localhost:53277/Service1.svc/File/Add";
+            json2.Add("userId", this.userId);
+            json2.Add("name", fileName);
+            json2.Add("description", "");
+            json2.Add("path", newFilePath);
+
+            GetValueFromPostResponse(serviceUrlToAddIntoDB, json2);
             ShowUserFiles();
 
 
@@ -172,8 +209,16 @@ namespace WinFormsHosting
 
         private async void ShowUserFiles()
         {
+            string response;
+            
+                string serviceUrl = string.Format("http://localhost:53277/Service1.svc/UserFilesByUserId/{0}", this.userId);
+      
+                response = GetValueFromGetResponse(serviceUrl );
+          
+            
+              
 
-            dataGridView1.DataSource = await _service.GetUserFilesByUserIdAsync(this.userId);
+            dataGridView1.DataSource = JsonConvert.DeserializeObject<List<UserFilesDTO>>(response);
             dataGridView1.Columns["Id"].Visible = false;
             dataGridView1.AutoResizeColumns();
 
@@ -198,8 +243,8 @@ namespace WinFormsHosting
                     {
                         if (row.Index == changedIndex)
                         {
-                            try
-                            {
+                           // try
+                           // {
                                 
                                 foreach (DataGridViewCell cell in row.Cells)
                                 {
@@ -212,32 +257,44 @@ namespace WinFormsHosting
                                     propertyInfo.SetValue(fileInfo, value, null);
                                 }
 
+                            string serviceUrl = "http://localhost:53277/Service1.svc/FileInfo/Update";
+                            string parameters = "Id="+fileInfo.Id+"&Name="+fileInfo.Name + "&Description="+fileInfo.Description+ "&hostingPath="+ this.hostingPath;
+                        JObject json = new JObject();
+
+                        json.Add("Id", fileInfo.Id);
+                        json.Add("Name", fileInfo.Name);
+                        json.Add("Description", fileInfo.Description);
+                        json.Add("hostingPath", this.hostingPath);
+
+                        string res = GetValueFromPostResponse(serviceUrl, json);
+
+                        //using (WebClient proxy = new WebClient())
+                        //    {
+                        //        proxy.UploadString(serviceUrl, parameters);
+                        //      }
 
 
-                                isUpdated =  await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
+                        //               isUpdated =  await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
 
-                            if (!isUpdated)
-                            {
-                                ShowProgress(progressLabel, "Incorrect file name");
-                            }
-                            else
-                            {
-                                ShowProgress(progressLabel, "Data was updated");
-                            }
+                        if (!isUpdated)
+                                {
+                                    ShowProgress(progressLabel, "Incorrect file name");
+                                }
+                                else
+                                {
+                                    ShowProgress(progressLabel, "Data was updated");
+                                }
 
-                        }
-                            catch
-                            {
-                                ShowProgress(progressLabel, "Name of file must be declared!!!");
-                            }
+                      //  }
+                        //    catch
+                        //    {
+                          //      ShowProgress(progressLabel, "Name of file must be declared!!!");
+                         //   }
 
                             }
                         
                     }
                     
-                
-
-
                 ShowUserFiles();
             }
             
@@ -261,15 +318,44 @@ namespace WinFormsHosting
         private async void buttonDelete_Click(object sender, EventArgs e)
         {
             string fileName =  inputDelete.Text;
-            
-            
-                string message = await _service.DeleteFileByNameAsync(fileName, this.userName);
 
-            ShowProgress(progressLabel, message);
+           
+            string serviceUrl = string.Format("http://localhost:53277/Service1.svc/File/Delete/{0}/{1}", fileName, this.userName);
+            JObject json = new JObject();
+            json.Add("fileName", fileName);
+            json.Add("userName", this.userName);
+            string message = GetValueFromPostResponse(serviceUrl,json); 
+              ShowProgress(progressLabel, message);
             ShowUserFiles();
             inputDelete.Text = "";
 
            
+        }
+        public string GetValueFromGetResponse(string serviceUrl)
+        {
+            
+            using (WebClient proxy = new WebClient())
+            {
+                byte[] _data = proxy.DownloadData(serviceUrl);
+                string vvv = proxy.DownloadString(serviceUrl);
+                Stream _mem = new MemoryStream(_data);
+                var reader = new StreamReader(_mem);
+                var result = reader.ReadToEndAsync();
+                return result.Result;
+            }
+             
+        }
+
+        public string GetValueFromPostResponse(string serviceUrl, JObject json)
+        {
+            using (WebClient proxy = new WebClient())
+            {
+               
+                proxy.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string response = proxy.UploadString(serviceUrl, json.ToString(Newtonsoft.Json.Formatting.None, null));
+                return response;
+            }
+               
         }
     }
 }

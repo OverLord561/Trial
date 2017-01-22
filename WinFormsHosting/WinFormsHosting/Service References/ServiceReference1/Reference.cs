@@ -318,6 +318,12 @@ namespace WinFormsHosting.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/RegisterUser", ReplyAction="http://tempuri.org/IService1/RegisterUserResponse")]
         System.Threading.Tasks.Task<string> RegisterUserAsync(string name, string password);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CopyFileToFolder", ReplyAction="http://tempuri.org/IService1/CopyFileToFolderResponse")]
+        void CopyFileToFolder(string sourceFile, string fileName, string hostingPath, string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CopyFileToFolder", ReplyAction="http://tempuri.org/IService1/CopyFileToFolderResponse")]
+        System.Threading.Tasks.Task CopyFileToFolderAsync(string sourceFile, string fileName, string hostingPath, string userName);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetAllUsers", ReplyAction="http://tempuri.org/IService1/GetAllUsersResponse")]
         WinFormsHosting.ServiceReference1.CurrentUser[] GetAllUsers();
         
@@ -336,12 +342,6 @@ namespace WinFormsHosting.ServiceReference1 {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/LogIn", ReplyAction="http://tempuri.org/IService1/LogInResponse")]
         System.Threading.Tasks.Task<bool> LogInAsync(string name, string password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CopyFileToFolder", ReplyAction="http://tempuri.org/IService1/CopyFileToFolderResponse")]
-        void CopyFileToFolder(string sourceFile, string fileName, string hostingPath, string userName);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/CopyFileToFolder", ReplyAction="http://tempuri.org/IService1/CopyFileToFolderResponse")]
-        System.Threading.Tasks.Task CopyFileToFolderAsync(string sourceFile, string fileName, string hostingPath, string userName);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserIdByName", ReplyAction="http://tempuri.org/IService1/GetUserIdByNameResponse")]
         int GetUserIdByName(string userName);
         
@@ -349,10 +349,10 @@ namespace WinFormsHosting.ServiceReference1 {
         System.Threading.Tasks.Task<int> GetUserIdByNameAsync(string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserFilesByUserId", ReplyAction="http://tempuri.org/IService1/GetUserFilesByUserIdResponse")]
-        WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(int userId);
+        WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(string userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetUserFilesByUserId", ReplyAction="http://tempuri.org/IService1/GetUserFilesByUserIdResponse")]
-        System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId);
+        System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(string userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
         bool UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
@@ -402,6 +402,14 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.RegisterUserAsync(name, password);
         }
         
+        public void CopyFileToFolder(string sourceFile, string fileName, string hostingPath, string userName) {
+            base.Channel.CopyFileToFolder(sourceFile, fileName, hostingPath, userName);
+        }
+        
+        public System.Threading.Tasks.Task CopyFileToFolderAsync(string sourceFile, string fileName, string hostingPath, string userName) {
+            return base.Channel.CopyFileToFolderAsync(sourceFile, fileName, hostingPath, userName);
+        }
+        
         public WinFormsHosting.ServiceReference1.CurrentUser[] GetAllUsers() {
             return base.Channel.GetAllUsers();
         }
@@ -426,14 +434,6 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.LogInAsync(name, password);
         }
         
-        public void CopyFileToFolder(string sourceFile, string fileName, string hostingPath, string userName) {
-            base.Channel.CopyFileToFolder(sourceFile, fileName, hostingPath, userName);
-        }
-        
-        public System.Threading.Tasks.Task CopyFileToFolderAsync(string sourceFile, string fileName, string hostingPath, string userName) {
-            return base.Channel.CopyFileToFolderAsync(sourceFile, fileName, hostingPath, userName);
-        }
-        
         public int GetUserIdByName(string userName) {
             return base.Channel.GetUserIdByName(userName);
         }
@@ -442,11 +442,11 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.GetUserIdByNameAsync(userName);
         }
         
-        public WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(int userId) {
+        public WinFormsHosting.ServiceReference1.UserFilesDTO[] GetUserFilesByUserId(string userId) {
             return base.Channel.GetUserFilesByUserId(userId);
         }
         
-        public System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(int userId) {
+        public System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(string userId) {
             return base.Channel.GetUserFilesByUserIdAsync(userId);
         }
         

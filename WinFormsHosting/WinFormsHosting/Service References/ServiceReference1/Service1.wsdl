@@ -13,6 +13,12 @@
   <wsdl:message name="IService1_RegisterUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_CopyFileToFolder_InputMessage">
+    <wsdl:part name="parameters" element="tns:CopyFileToFolder" />
+  </wsdl:message>
+  <wsdl:message name="IService1_CopyFileToFolder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CopyFileToFolderResponse" />
+  </wsdl:message>
   <wsdl:message name="IService1_GetAllUsers_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAllUsers" />
   </wsdl:message>
@@ -30,12 +36,6 @@
   </wsdl:message>
   <wsdl:message name="IService1_LogIn_OutputMessage">
     <wsdl:part name="parameters" element="tns:LogInResponse" />
-  </wsdl:message>
-  <wsdl:message name="IService1_CopyFileToFolder_InputMessage">
-    <wsdl:part name="parameters" element="tns:CopyFileToFolder" />
-  </wsdl:message>
-  <wsdl:message name="IService1_CopyFileToFolder_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CopyFileToFolderResponse" />
   </wsdl:message>
   <wsdl:message name="IService1_GetUserIdByName_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserIdByName" />
@@ -66,6 +66,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/RegisterUser" message="tns:IService1_RegisterUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/RegisterUserResponse" message="tns:IService1_RegisterUser_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="CopyFileToFolder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/CopyFileToFolder" message="tns:IService1_CopyFileToFolder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/CopyFileToFolderResponse" message="tns:IService1_CopyFileToFolder_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetAllUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetAllUsers" message="tns:IService1_GetAllUsers_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetAllUsersResponse" message="tns:IService1_GetAllUsers_OutputMessage" />
@@ -77,10 +81,6 @@
     <wsdl:operation name="LogIn">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/LogIn" message="tns:IService1_LogIn_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/LogInResponse" message="tns:IService1_LogIn_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="CopyFileToFolder">
-      <wsdl:input wsaw:Action="http://tempuri.org/IService1/CopyFileToFolder" message="tns:IService1_CopyFileToFolder_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IService1/CopyFileToFolderResponse" message="tns:IService1_CopyFileToFolder_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUserIdByName">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetUserIdByName" message="tns:IService1_GetUserIdByName_InputMessage" />
@@ -99,93 +99,5 @@
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/DeleteFileByNameResponse" message="tns:IService1_DeleteFileByName_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
-    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="RegisterUser">
-      <soap:operation soapAction="http://tempuri.org/IService1/RegisterUser" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetAllUsers">
-      <soap:operation soapAction="http://tempuri.org/IService1/GetAllUsers" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="AddFile">
-      <soap:operation soapAction="http://tempuri.org/IService1/AddFile" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="LogIn">
-      <soap:operation soapAction="http://tempuri.org/IService1/LogIn" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="CopyFileToFolder">
-      <soap:operation soapAction="http://tempuri.org/IService1/CopyFileToFolder" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetUserIdByName">
-      <soap:operation soapAction="http://tempuri.org/IService1/GetUserIdByName" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetUserFilesByUserId">
-      <soap:operation soapAction="http://tempuri.org/IService1/GetUserFilesByUserId" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="UpdateFileInfo">
-      <soap:operation soapAction="http://tempuri.org/IService1/UpdateFileInfo" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="DeleteFileByName">
-      <soap:operation soapAction="http://tempuri.org/IService1/DeleteFileByName" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-  </wsdl:binding>
-  <wsdl:service name="Service1">
-    <wsdl:port name="BasicHttpBinding_IService1" binding="tns:BasicHttpBinding_IService1">
-      <soap:address location="http://localhost:53277/Service1.svc" />
-    </wsdl:port>
-  </wsdl:service>
+  <wsdl:service name="Service1" />
 </wsdl:definitions>

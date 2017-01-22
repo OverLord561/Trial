@@ -87,12 +87,12 @@ namespace WcfServiceHosting
 
         public string RegisterUser(string name, string password)
         {
-          
+
             try
             {
-                
+
                 Thread.Sleep(1000);
-                if (!CheckIfUserExist(name) )
+                if (!CheckIfUserExist(name))
                 {
                     CurrentUser user = new CurrentUser { CurrentUserName = name, CurrentUserPassword = password };
                     db.CurrentUsers.Add(user);
@@ -104,14 +104,14 @@ namespace WcfServiceHosting
                     return null;
                 }
 
-           }
+            }
             catch (Exception ex)
-           {
-                
+            {
+
                 return null;
             }
-          
-            
+
+
         }
 
         public bool CheckIfUserExist(string name)
@@ -160,13 +160,16 @@ namespace WcfServiceHosting
 
         public int GetUserIdByName(string userName)
         {
+            int userId;
            CurrentUser user  = db.CurrentUsers.FirstOrDefault(x => x.CurrentUserName == userName);
-            return user.CurrentUserId;
+            userId = user.CurrentUserId;
+            return userId;
         }
 
-        public IEnumerable<UserFilesDTO> GetUserFilesByUserId(int userId)
+        public IEnumerable<UserFilesDTO> GetUserFilesByUserId(string userId)
         {
-            List<UserFilesDTO> files = db.UserFiles.Where(x=>x.CurrentUserId == userId)
+            int _userId = Convert.ToInt32(userId);
+            List<UserFilesDTO> files = db.UserFiles.Where(x=>x.CurrentUserId == _userId)
                                                    .Select(n => new UserFilesDTO
             {
                 Id = n.UserFileId.ToString(),
@@ -177,11 +180,11 @@ namespace WcfServiceHosting
             return files;
         }
 
-        public bool UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath)
+        public bool UpdateFileInfo( UserFilesDTO fileInfo, string hostingPath)
         {
-           try
+            try
             {
-               
+
                 int fileId = Convert.ToInt32(fileInfo.Id);
                 UserFile oldFileInfo = db.UserFiles.FirstOrDefault(x => x.UserFileId == fileId);
                 oldFileInfo.CurrentUser = db.CurrentUsers.Find(oldFileInfo.CurrentUserId);
@@ -189,25 +192,25 @@ namespace WcfServiceHosting
 
                 if (oldFileInfo.UserFileName != fileInfo.Name)
                 {
-                    string newFilePath = hostingPath + "\\" +userName +"\\" + fileInfo.Name;
+                    string newFilePath = hostingPath + "\\" + userName + "\\" + fileInfo.Name;
                     File.Move(oldFileInfo.UserFilePath, newFilePath);
                     oldFileInfo.UserFilePath = newFilePath;
                 }
 
                 oldFileInfo.UserFileName = fileInfo.Name;
                 oldFileInfo.UserFileDescription = fileInfo.Description;
-               
+
                 db.Entry(oldFileInfo).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return true;
-          }
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
-              
+
             }
-            
+
         }
 
         public string DeleteFileByName(string fileName, string userName)
