@@ -138,8 +138,12 @@ namespace WinFormsHosting
             {
                 foreach (string filename in openFile.FileNames)
                 {
-                     path = filename;                   
+                    path = filename;
                 }
+            }
+            else
+            {
+                return;
             }
            
             fileName = openFile.SafeFileName;
@@ -243,10 +247,10 @@ namespace WinFormsHosting
                     {
                         if (row.Index == changedIndex)
                         {
-                           // try
-                           // {
-                                
-                                foreach (DataGridViewCell cell in row.Cells)
+                        try
+                        {
+
+                            foreach (DataGridViewCell cell in row.Cells)
                                 {
                                     
                                     string value = cell.Value.ToString();
@@ -258,7 +262,7 @@ namespace WinFormsHosting
                                 }
 
                             string serviceUrl = "http://localhost:53277/Service1.svc/FileInfo/Update";
-                            string parameters = "Id="+fileInfo.Id+"&Name="+fileInfo.Name + "&Description="+fileInfo.Description+ "&hostingPath="+ this.hostingPath;
+
                         JObject json = new JObject();
 
                         json.Add("Id", fileInfo.Id);
@@ -266,15 +270,13 @@ namespace WinFormsHosting
                         json.Add("Description", fileInfo.Description);
                         json.Add("hostingPath", this.hostingPath);
 
-                        string res = GetValueFromPostResponse(serviceUrl, json);
-
-                        //using (WebClient proxy = new WebClient())
-                        //    {
-                        //        proxy.UploadString(serviceUrl, parameters);
-                        //      }
+                        
+                       string response = GetValueFromPostResponse(serviceUrl, json);
 
 
-                        //               isUpdated =  await _service.UpdateFileInfoAsync(fileInfo, this.hostingPath);
+                      
+
+                        isUpdated = JsonConvert.DeserializeObject<bool>(response);
 
                         if (!isUpdated)
                                 {
@@ -285,13 +287,13 @@ namespace WinFormsHosting
                                     ShowProgress(progressLabel, "Data was updated");
                                 }
 
-                      //  }
-                        //    catch
-                        //    {
-                          //      ShowProgress(progressLabel, "Name of file must be declared!!!");
-                         //   }
+                    }
+                            catch
+                    {
+                        ShowProgress(progressLabel, "Name of file must be declared!!!");
+                    }
 
-                            }
+                }
                         
                     }
                     
@@ -319,13 +321,16 @@ namespace WinFormsHosting
         {
             string fileName =  inputDelete.Text;
 
-           
-            string serviceUrl = string.Format("http://localhost:53277/Service1.svc/File/Delete/{0}/{1}", fileName, this.userName);
+
+            string serviceUrl = string.Format("http://localhost:53277/Service1.svc/File/Delete");
             JObject json = new JObject();
             json.Add("fileName", fileName);
             json.Add("userName", this.userName);
-            string message = GetValueFromPostResponse(serviceUrl,json); 
-              ShowProgress(progressLabel, message);
+
+            string response = GetValueFromPostResponse(serviceUrl,json);
+            string message =  JsonConvert.DeserializeObject<string>(response);
+
+            ShowProgress(progressLabel, message);
             ShowUserFiles();
             inputDelete.Text = "";
 
@@ -336,6 +341,7 @@ namespace WinFormsHosting
             
             using (WebClient proxy = new WebClient())
             {
+                proxy.Encoding = System.Text.Encoding.UTF8;
                 byte[] _data = proxy.DownloadData(serviceUrl);
                 string vvv = proxy.DownloadString(serviceUrl);
                 Stream _mem = new MemoryStream(_data);
@@ -352,6 +358,8 @@ namespace WinFormsHosting
             {
                
                 proxy.Headers[HttpRequestHeader.ContentType] = "application/json";
+                //charset=utf-8"
+                proxy.Encoding = System.Text.Encoding.UTF8;
                 string response = proxy.UploadString(serviceUrl, json.ToString(Newtonsoft.Json.Formatting.None, null));
                 return response;
             }

@@ -180,10 +180,11 @@ namespace WcfServiceHosting
             return files;
         }
 
-        public bool UpdateFileInfo( UserFilesDTO fileInfo, string hostingPath)
+        public bool UpdateFileInfo(  string hostingPath, string Id, string Name, string Description)
         {
             try
             {
+                UserFilesDTO fileInfo = new UserFilesDTO { Id = Id, Description = Description, Name = Name};
 
                 int fileId = Convert.ToInt32(fileInfo.Id);
                 UserFile oldFileInfo = db.UserFiles.FirstOrDefault(x => x.UserFileId == fileId);

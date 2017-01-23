@@ -64,14 +64,17 @@ namespace WcfServiceHosting
         IEnumerable<UserFilesDTO> GetUserFilesByUserId(string userId);
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "FileInfo/Update",Method ="POST", BodyStyle = WebMessageBodyStyle.WrappedRequest, ResponseFormat = WebMessageFormat.Json,
-            RequestFormat = WebMessageFormat.Json)]
-        bool UpdateFileInfo(UserFilesDTO fileInfo, string hostingPath);
+        [WebInvoke(UriTemplate = "FileInfo/Update",
+            Method ="POST",
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.WrappedRequest)]
+        bool UpdateFileInfo(string hostingPath, string Id, string Name, string Description);
 
         [OperationContract]
-        [WebInvoke(
-            UriTemplate = "File/Delete/{fileName}/{userName}",
-            Method = "Delete",
+        [WebInvoke(                
+            UriTemplate = "File/Delete",
+            Method = "POST",
             BodyStyle = WebMessageBodyStyle.WrappedRequest,
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json)]

@@ -355,10 +355,10 @@ namespace WinFormsHosting.ServiceReference1 {
         System.Threading.Tasks.Task<WinFormsHosting.ServiceReference1.UserFilesDTO[]> GetUserFilesByUserIdAsync(string userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        bool UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
+        bool UpdateFileInfo(string hostingPath, string Id, string Name, string Description);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/UpdateFileInfo", ReplyAction="http://tempuri.org/IService1/UpdateFileInfoResponse")]
-        System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath);
+        System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(string hostingPath, string Id, string Name, string Description);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/DeleteFileByName", ReplyAction="http://tempuri.org/IService1/DeleteFileByNameResponse")]
         string DeleteFileByName(string fileName, string userName);
@@ -450,12 +450,12 @@ namespace WinFormsHosting.ServiceReference1 {
             return base.Channel.GetUserFilesByUserIdAsync(userId);
         }
         
-        public bool UpdateFileInfo(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
-            return base.Channel.UpdateFileInfo(fileInfo, hostingPath);
+        public bool UpdateFileInfo(string hostingPath, string Id, string Name, string Description) {
+            return base.Channel.UpdateFileInfo(hostingPath, Id, Name, Description);
         }
         
-        public System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(WinFormsHosting.ServiceReference1.UserFilesDTO fileInfo, string hostingPath) {
-            return base.Channel.UpdateFileInfoAsync(fileInfo, hostingPath);
+        public System.Threading.Tasks.Task<bool> UpdateFileInfoAsync(string hostingPath, string Id, string Name, string Description) {
+            return base.Channel.UpdateFileInfoAsync(hostingPath, Id, Name, Description);
         }
         
         public string DeleteFileByName(string fileName, string userName) {

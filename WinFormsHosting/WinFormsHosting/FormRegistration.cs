@@ -46,6 +46,7 @@ namespace WinFormsHosting
                     JObject json = new JObject();
                     json.Add("name", textBox1.Text);
                     json.Add("password", textBox2.Text);
+                    proxy.Encoding = System.Text.Encoding.UTF8;
                     proxy.Headers[HttpRequestHeader.ContentType] = "application/json";
                     string response = proxy.UploadString(serviceUrl, json.ToString(Newtonsoft.Json.Formatting.None, null));
 
