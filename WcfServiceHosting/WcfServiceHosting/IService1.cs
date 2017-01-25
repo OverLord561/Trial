@@ -69,7 +69,7 @@ namespace WcfServiceHosting
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.WrappedRequest)]
-        bool UpdateFileInfo(string hostingPath, string Id, string Name, string Description);
+        bool UpdateFileInfo(string hostingPath, string Id, string Name, string Description, UserFilesDTO info);
 
         [OperationContract]
         [WebInvoke(                

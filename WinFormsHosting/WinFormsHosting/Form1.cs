@@ -270,8 +270,13 @@ namespace WinFormsHosting
                         json.Add("Description", fileInfo.Description);
                         json.Add("hostingPath", this.hostingPath);
 
-                        
-                       string response = GetValueFromPostResponse(serviceUrl, json);
+                            JObject file = new JObject();
+                            file.Add("Name", fileInfo.Name);
+                            file.Add("Description", fileInfo.Description);
+                            file.Add("Id", fileInfo.Id);
+                            json.Add("info",file);
+
+                            string response = GetValueFromPostResponse(serviceUrl, json);
 
 
                       

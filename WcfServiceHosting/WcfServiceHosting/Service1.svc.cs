@@ -180,7 +180,7 @@ namespace WcfServiceHosting
             return files;
         }
 
-        public bool UpdateFileInfo(  string hostingPath, string Id, string Name, string Description)
+        public bool UpdateFileInfo(  string hostingPath, string Id, string Name, string Description, UserFilesDTO info)
         {
             try
             {
